@@ -9,6 +9,7 @@ using System.IO.Ports;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.ComponentModel.DataAnnotations;
 
 namespace FuzzySpoon
 {
@@ -23,32 +24,8 @@ namespace FuzzySpoon
         {
             cmbBaud.Items.Clear();
             cmbBaud.Text = "Select a Baud Rate";
-            cmbController.Items.Clear();
-            cmbController.Text = "Select a controller";
             cmbPort.Items.Clear();
             cmbPort.Text = "Select a Port";
-
-            //Fill the controllers dropdown
-            //Controller controller = new Controller();
-            //if (controller.Commands != null)
-            //{
-            //    var controllers = from d in controller.ControllerName
-            //                        select d;
-            //    foreach (var item in controllers)
-            //    {
-            //        cmbController.Items.Add(item);
-            //    }
-            //}
-            //else
-            //{
-            //    //Let's add a dummy value
-            //    controller.ControllerName = "SSD1322";
-            //    Command command = new Command();
-            //    command.CommandName = "GetID";
-            //    command.CommandValue = 0x30;
-            //    command.Parameters.Add(0x26);
-            //    controller.Commands.Add(command);
-            //}
 
             //Fill the port dropdown
             string[] ports = SerialPort.GetPortNames();
@@ -66,27 +43,38 @@ namespace FuzzySpoon
                 }
             }
 
-            //Fill the baud rate dropdown
-            using (var ctx = new ControllerCommands())
+            using (var ctx = new OLEDController())
             {
-                var result = from row in ctx.BaudRates
+                //Fill the baud rate dropdown
+                var baudResult = from row in ctx.BaudRates
                                 select row;
 
-                if(result.Count() == 0)
+                if(baudResult.Count() == 0)
                 {
                     //Let's add dummy Values
                     ctx.BaudRates.Add(new BaudRate() { Baud = 19200 });
                     ctx.BaudRates.Add(new BaudRate() { Baud = 115200 });
                     ctx.SaveChanges();
+                    cmbBaud.Items.Add("19200");
                 }
                 else
                 {
-                    foreach (var item in result)
+                    foreach (var item in baudResult)
                     {
                         cmbBaud.Items.Add(item.Baud);
                     }
                 }
             }
+        }
+
+        private void cmdConnect_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form2 frm = new Form2();
+            //frm.Show();
+            frm.ShowDialog();
+
+            this.Close();
         }
     }
 
@@ -108,23 +96,27 @@ namespace FuzzySpoon
         public int ControllerId { get; set; }
         public string ControllerName { get; set; }
 
-        public ICollection<Command> Commands { get; set; }
+        public List<ControllerCommand> Commands { get; set; }
     }
 
-    public class Command
+    public class ControllerCommand
     {
+        [Key]
         public int CommandId { get; set; }
+        public int ControllerId { get; set; }
         public string CommandName { get; set; }
         public int CommandValue { get; set; }
         public List<int> Parameters { get; set; }
 
-        public virtual Controller Controller { get; set; }
+//        public virtual Controller Controller { get; set; }
     }
 
-    public class ControllerCommands : DbContext
+    public class OLEDController : DbContext
     {
         public DbSet<BaudRate> BaudRates { get; set; }
+        public DbSet<ControllerCommand> Commands { get; set; }
         public DbSet<Controller> Controllers { get; set; }
-        public DbSet<Command> Commands { get; set; }
     }
+
+
 }
