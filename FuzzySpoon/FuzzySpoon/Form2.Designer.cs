@@ -56,7 +56,6 @@
             this.cmbController.Name = "cmbController";
             this.cmbController.Size = new System.Drawing.Size(257, 21);
             this.cmbController.TabIndex = 0;
-            this.cmbController.SelectedIndexChanged += new System.EventHandler(this.cmbController_SelectedIndexChanged);
             // 
             // lbCommands
             // 

@@ -106,9 +106,16 @@ namespace FuzzySpoon
         public int ControllerId { get; set; }
         public string CommandName { get; set; }
         public int CommandValue { get; set; }
-        public List<int> Parameters { get; set; }
+        public List<CommandParameters> Parameters { get; set; }
+    }
 
-//        public virtual Controller Controller { get; set; }
+    public class CommandParameters
+    {
+        [Key]
+        public int ParameterId { get; set; }
+        public int CommandId { get; set; }
+        public int ParameterIndex { get; set; }
+        public int ParameterValue { get; set; }
     }
 
     public class OLEDController : DbContext
@@ -116,6 +123,7 @@ namespace FuzzySpoon
         public DbSet<BaudRate> BaudRates { get; set; }
         public DbSet<ControllerCommand> Commands { get; set; }
         public DbSet<Controller> Controllers { get; set; }
+        public DbSet<CommandParameters> Parameters {get; set;}
     }
 
 
