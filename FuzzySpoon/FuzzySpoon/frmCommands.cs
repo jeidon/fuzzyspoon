@@ -11,14 +11,14 @@ using System.Windows.Forms;
 
 namespace FuzzySpoon
 {
-    public partial class Form2 : Form
+    public partial class frmCommands : Form
     {
-        public Form2()
+        public frmCommands()
         {
             InitializeComponent();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+        private void frmCommands_Load(object sender, EventArgs e)
         {
             using (var ctx = new OLEDController())
             {
@@ -30,17 +30,27 @@ namespace FuzzySpoon
                 if (controllerResult.Count() == 0)
                 {
                     //Add some sample values
-                    Controller sampleController = new Controller() { ControllerName = "SSD1322" };
+                    //Add a controller
+                    Controller sampleController;
+                    sampleController = new Controller() { ControllerName = "SSD1805" };
                     ctx.Controllers.Add(sampleController);
 
-                    ControllerCommand sampleCommand = new ControllerCommand() { ControllerId = 0, CommandName = "GetID", CommandValue = 0x01};
+                    //Add a command
+                    ControllerCommand sampleCommand = new ControllerCommand() { ControllerId = 0, CommandName = "GetID", CommandValue = 0x01 };
                     ctx.Commands.Add(sampleCommand);
 
-                    CommandParameters sampleParameters = new CommandParameters() { CommandId = 0, ParameterId = 0, ParameterIndex = 0, ParameterValue = 0 };
+                    //Add a parameter
+                    CommandParameters sampleParameters;
+                    sampleParameters = new CommandParameters() { CommandId = sampleCommand.CommandId, ParameterIndex = 0, ParameterValue = 15 };
                     ctx.Parameters.Add(sampleParameters);
+                    sampleParameters = new CommandParameters() { CommandId = sampleCommand.CommandId, ParameterIndex = 1, ParameterValue = 26 };
+
+                    sampleController = new Controller() { ControllerName = "SSD1322" };
+                    ctx.Controllers.Add(sampleController);
 
                     ctx.SaveChanges();
                 }
+
                 //Configure the dropdown boxes
                 cmbController.DataSource = ctx.Controllers.ToList();
                 cmbController.ValueMember = "ControllerId";
@@ -67,8 +77,8 @@ namespace FuzzySpoon
 
                     //Delete any of the current parameters
                     var originalParameters = from row in ctx.Parameters
-                                           where row.CommandId == originalCommand.CommandId
-                                           select row;
+                                             where row.CommandId == originalCommand.CommandId
+                                             select row;
                     if (originalParameters.Count() > 0)
                     {
                         foreach (var row in originalParameters)
@@ -106,11 +116,15 @@ namespace FuzzySpoon
 
         private void lbCommands_SelectedIndexChanged(object sender, EventArgs e)
         {
+            txtName.Text = "";
+            txtCommand.Tag = "";
+            txtCommand.Text = "";
+            txtParameters.Text = "";
             using (var ctx = new OLEDController())
             {
                 var selectedCommand = (ControllerCommand)lbCommands.SelectedItem;
                 var commandResult = from row in ctx.Commands
-                                       select row;
+                                    select row;
                 commandResult = commandResult.Where(p => p.ControllerId == cmbController.SelectedIndex + 1);
                 commandResult = commandResult.Where(p => p.CommandId == selectedCommand.CommandId);
                 if (commandResult.Count() > 0)
@@ -124,7 +138,6 @@ namespace FuzzySpoon
                         var parameterResult = from row in ctx.Parameters
                                               select row;
                         parameterResult = parameterResult.Where(p => p.CommandId == item.CommandId);
-                        txtParameters.Text = "";
                         foreach (var parameter in parameterResult)
                         {
                             if (parameter.ParameterIndex != 0)
@@ -180,10 +193,10 @@ namespace FuzzySpoon
             using (var ctx = new OLEDController())
             {
                 var commandResult = (from row in ctx.Commands
-                                    where row.ControllerId == cmbController.SelectedIndex + 1
-                                    where row.CommandId == lbCommands.SelectedIndex + 1
-                                    select row).FirstOrDefault();
-                
+                                     where row.ControllerId == cmbController.SelectedIndex + 1
+                                     where row.CommandId == lbCommands.SelectedIndex + 1
+                                     select row).FirstOrDefault();
+
                 if (commandResult != null)
                 {
                     //Delete it from memory
@@ -193,6 +206,25 @@ namespace FuzzySpoon
                 }
                 lbCommands.DataBindings.Clear();
                 lbCommands.DataSource = ctx.Commands.ToList();
+                lbCommands.ValueMember = "CommandId";
+                lbCommands.DisplayMember = "CommandName";
+            }
+        }
+
+        private void cmbController_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtName.Text = "";
+            txtCommand.Tag = "";
+            txtCommand.Text = "";
+            txtParameters.Text = "";
+            using (var ctx = new OLEDController())
+            {
+                lbCommands.DataBindings.Clear();
+                var commandsResult = (from row in ctx.Commands
+                                      where row.ControllerId == cmbController.SelectedIndex + 1
+                                      select row);
+
+                lbCommands.DataSource = commandsResult.ToList();
                 lbCommands.ValueMember = "CommandId";
                 lbCommands.DisplayMember = "CommandName";
             }

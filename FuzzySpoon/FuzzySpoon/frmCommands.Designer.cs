@@ -1,6 +1,6 @@
 ﻿namespace FuzzySpoon
 {
-    partial class Form2
+    partial class frmCommands
     {
         /// <summary>
         /// Required designer variable.
@@ -56,6 +56,7 @@
             this.cmbController.Name = "cmbController";
             this.cmbController.Size = new System.Drawing.Size(257, 21);
             this.cmbController.TabIndex = 0;
+            this.cmbController.SelectedIndexChanged += new System.EventHandler(this.cmbController_SelectedIndexChanged);
             // 
             // lbCommands
             // 
@@ -117,11 +118,11 @@
             this.cmdInsert.UseVisualStyleBackColor = true;
             this.cmdInsert.Click += new System.EventHandler(this.cmdInsert_Click);
             // 
-            // Form2
+            // frmCommands
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(284, 223);
             this.Controls.Add(this.cmdInsert);
             this.Controls.Add(this.cmdDelete);
             this.Controls.Add(this.txtName);
@@ -131,9 +132,9 @@
             this.Controls.Add(this.lbCommands);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbController);
-            this.Name = "Form2";
-            this.Text = "Form2";
-            this.Load += new System.EventHandler(this.Form2_Load);
+            this.Name = "frmCommands";
+            this.Text = "Command Manager";
+            this.Load += new System.EventHandler(this.frmCommands_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
