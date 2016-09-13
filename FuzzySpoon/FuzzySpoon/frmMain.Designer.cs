@@ -35,12 +35,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cmbPort = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnNormal = new System.Windows.Forms.Button();
+            this.btnFill2 = new System.Windows.Forms.Button();
+            this.cmbFill1 = new System.Windows.Forms.Button();
             this.cmdSend = new System.Windows.Forms.Button();
             this.cmbCommands = new System.Windows.Forms.ComboBox();
             this.cmdEdit = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbController = new System.Windows.Forms.ComboBox();
             this.cmdInit = new System.Windows.Forms.Button();
+            this.btnInvert = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -110,6 +114,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnInvert);
+            this.groupBox2.Controls.Add(this.btnNormal);
+            this.groupBox2.Controls.Add(this.btnFill2);
+            this.groupBox2.Controls.Add(this.cmbFill1);
             this.groupBox2.Controls.Add(this.cmdSend);
             this.groupBox2.Controls.Add(this.cmbCommands);
             this.groupBox2.Controls.Add(this.cmdEdit);
@@ -119,10 +127,40 @@
             this.groupBox2.Enabled = false;
             this.groupBox2.Location = new System.Drawing.Point(12, 145);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(296, 175);
+            this.groupBox2.Size = new System.Drawing.Size(296, 210);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Controller Interface";
+            // 
+            // btnNormal
+            // 
+            this.btnNormal.Location = new System.Drawing.Point(9, 152);
+            this.btnNormal.Name = "btnNormal";
+            this.btnNormal.Size = new System.Drawing.Size(75, 23);
+            this.btnNormal.TabIndex = 39;
+            this.btnNormal.Text = "Normal";
+            this.btnNormal.UseVisualStyleBackColor = true;
+            this.btnNormal.Click += new System.EventHandler(this.btnNormal_Click);
+            // 
+            // btnFill2
+            // 
+            this.btnFill2.Location = new System.Drawing.Point(90, 181);
+            this.btnFill2.Name = "btnFill2";
+            this.btnFill2.Size = new System.Drawing.Size(75, 23);
+            this.btnFill2.TabIndex = 38;
+            this.btnFill2.Text = "Fill 2";
+            this.btnFill2.UseVisualStyleBackColor = true;
+            this.btnFill2.Click += new System.EventHandler(this.btnFill2_Click);
+            // 
+            // cmbFill1
+            // 
+            this.cmbFill1.Location = new System.Drawing.Point(9, 181);
+            this.cmbFill1.Name = "cmbFill1";
+            this.cmbFill1.Size = new System.Drawing.Size(75, 23);
+            this.cmbFill1.TabIndex = 37;
+            this.cmbFill1.Text = "Fill 1";
+            this.cmbFill1.UseVisualStyleBackColor = true;
+            this.cmbFill1.Click += new System.EventHandler(this.cmbFill1_Click);
             // 
             // cmdSend
             // 
@@ -181,11 +219,21 @@
             this.cmdInit.UseVisualStyleBackColor = false;
             this.cmdInit.Click += new System.EventHandler(this.cmdInit_Click);
             // 
+            // btnInvert
+            // 
+            this.btnInvert.Location = new System.Drawing.Point(90, 152);
+            this.btnInvert.Name = "btnInvert";
+            this.btnInvert.Size = new System.Drawing.Size(75, 23);
+            this.btnInvert.TabIndex = 40;
+            this.btnInvert.Text = "Invert";
+            this.btnInvert.UseVisualStyleBackColor = true;
+            this.btnInvert.Click += new System.EventHandler(this.btnInvert_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 332);
+            this.ClientSize = new System.Drawing.Size(320, 386);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmMain";
@@ -214,6 +262,10 @@
         private System.Windows.Forms.Button cmdEdit;
         private System.Windows.Forms.Button cmdSend;
         private System.Windows.Forms.ComboBox cmbCommands;
+        private System.Windows.Forms.Button cmbFill1;
+        private System.Windows.Forms.Button btnFill2;
+        private System.Windows.Forms.Button btnNormal;
+        private System.Windows.Forms.Button btnInvert;
     }
 }
 

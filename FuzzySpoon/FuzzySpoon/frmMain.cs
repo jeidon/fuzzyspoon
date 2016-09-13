@@ -154,11 +154,12 @@ namespace FuzzySpoon
 
             //Send the following Commands
             // Copied from CFA Bring Up
-            
+
             //Write_Command(0xFD);
             //Write_Data(0x12);
+            serial.CD = 1;
             serial.command = 0xFD;
-            serial.data.Add(0x12);
+            serial.data[0] = 0x12;
             Transmit(serial);
 
             //Write_Command(0xAE);
@@ -169,80 +170,92 @@ namespace FuzzySpoon
             //Write_Data(0x1c);
             //Write_Data(0x5b);
             serial.command = 0x15;
-            serial.data.Add(0x1C);
-            serial.data.Add(0x5B);
+            serial.dataLength = 2;
+            serial.data[0] = 0x1C;
+            serial.data[1] = 0x5B;
             Transmit(serial);
 
             //Write_Command(0x75);
             //Write_Data(0x00);
             //Write_Data(0x3f);
             serial.command = 0x75;
-            serial.data.Add(0x00);
-            serial.data.Add(0x3F);
+            serial.dataLength = 2;
+            serial.data[0] = 0x00;
+            serial.data[1] = 0x3F;
             Transmit(serial);
-            
+
             //Write_Command(0xB3);
             //Write_Data(0x91);
             serial.command = 0xB3;
-            serial.data.Add(0x91);
+            serial.dataLength = 1;
+            serial.data[0] = 0x91;
             Transmit(serial);
 
             //Write_Command(0xCA);
             //Write_Data(0x3F);
             serial.command = 0xCA;
-            serial.data.Add(0x3F);
+            serial.dataLength = 1;
+            serial.data[0] = 0x3F;
             Transmit(serial);
 
             //Write_Command(0xA2);
             //Write_Data(0x00);
             serial.command = 0xA2;
-            serial.data.Add(0x00);
+            serial.dataLength = 1;
+            serial.data[0] = 0x00;
             Transmit(serial);
 
             //Write_Command(0xA1);
             //Write_Data(0x00);
             serial.command = 0xA1;
-            serial.data.Add(0x00);
+            serial.dataLength = 1;
+            serial.data[0] = 0x00;
             Transmit(serial);
 
             //Write_Command(0xA0);
             //Write_Data(0x14);
             //Write_Data(0x11);
             serial.command = 0xA0;
-            serial.data.Add(0x14);
-            serial.data.Add(0x11);
+            serial.dataLength = 2;
+            serial.data[0] = 0x14;
+            serial.data[1] = 0x11;
             Transmit(serial);
 
             //Write_Command(0xB5);
             //Write_Data(0x00);
             serial.command = 0xB5;
-            serial.data.Add(0x00);
+            serial.dataLength = 1;
+            serial.data[0] = 0x00;
             Transmit(serial);
-            
+
             //Write_Command(0xAB);
             //Write_Data(0x01);
             serial.command = 0xAB;
-            serial.data.Add(0x01);
+            serial.dataLength = 1;
+            serial.data[0] = 0x01;
             Transmit(serial);
 
             //Write_Command(0xB4);
             //Write_Data(0xA0);
             //Write_Data(0xFD);
             serial.command = 0xB4;
-            serial.data.Add(0xA0);
-            serial.data.Add(0xFD);
+            serial.dataLength = 2;
+            serial.data[0] = 0xA0;
+            serial.data[1] = 0xFD;
             Transmit(serial);
 
             //Write_Command(0xC1);
             //Write_Data(0x9F);
             serial.command = 0xC1;
-            serial.data.Add(0x9F);
+            serial.dataLength = 1;
+            serial.data[0] = 0x9F;
             Transmit(serial);
 
             //Write_Command(0xC7);
             //Write_Data(0x0F);
             serial.command = 0xC7;
-            serial.data.Add(0x0F);
+            serial.dataLength = 1;
+            serial.data[0] = 0x0F;
             Transmit(serial);
 
             //Write_Command(0xb8);
@@ -262,21 +275,22 @@ namespace FuzzySpoon
             //Write_Data(0xa8);
             //Write_Data(0xb4);
             serial.command = 0xB8;
-            serial.data.Add(0x0C);
-            serial.data.Add(0x18);
-            serial.data.Add(0x24);
-            serial.data.Add(0x30);
-            serial.data.Add(0x3C);
-            serial.data.Add(0x48);
-            serial.data.Add(0x54);
-            serial.data.Add(0x60);
-            serial.data.Add(0x6C);
-            serial.data.Add(0x78);
-            serial.data.Add(0x84);
-            serial.data.Add(0x90);
-            serial.data.Add(0x9C);
-            serial.data.Add(0xA8);
-            serial.data.Add(0xB4);
+            serial.dataLength = 15;
+            serial.data[0] = 0x0C;
+            serial.data[1] = 0x18;
+            serial.data[2] = 0x24;
+            serial.data[3] = 0x30;
+            serial.data[4] = 0x3C;
+            serial.data[5] = 0x48;
+            serial.data[6] = 0x54;
+            serial.data[7] = 0x60;
+            serial.data[8] = 0x6C;
+            serial.data[9] = 0x78;
+            serial.data[10] = 0x84;
+            serial.data[11] = 0x90;
+            serial.data[12] = 0x9C;
+            serial.data[13] = 0xA8;
+            serial.data[14] = 0xB4;
             Transmit(serial);
 
             //Write_Command(0x00);
@@ -286,49 +300,58 @@ namespace FuzzySpoon
             //Write_Command(0xB1);
             //Write_Data(0xE2);
             serial.command = 0xB1;
-            serial.data.Add(0xE2);
+            serial.dataLength = 1;
+            serial.data[0] = 0xE2;
             Transmit(serial);
 
             //Write_Command(0xD1);
             //Write_Data(0x82);
             //Write_Data(0x20);
             serial.command = 0xD1;
-            serial.data.Add(0x82);
-            serial.data.Add(0x20);
+            serial.dataLength = 2;
+            serial.data[0] = 0x82;
+            serial.data[0] = 0x20;
             Transmit(serial);
 
             //Write_Command(0xBB);
             //Write_Data(0x1F);
             serial.command = 0xBB;
-            serial.data.Add(0x1F);
+            serial.dataLength = 1;
+            serial.data[0] = 0x1F;
             Transmit(serial);
 
             //Write_Command(0xB6);
             //Write_Data(0x08);
             serial.command = 0xB6;
-            serial.data.Add(0x08);
+            serial.dataLength = 1;
+            serial.data[0] = 0x08;
             Transmit(serial);
 
             //Write_Command(0xBE);
             //Write_Data(0x07);
             serial.command = 0xBE;
-            serial.data.Add(0x07);
+            serial.dataLength = 1;
+            serial.data[0] = 0x07;
             Transmit(serial);
 
             //Write_Command(0xA6);
             serial.command = 0xA6;
+            serial.dataLength = 0;
             Transmit(serial);
 
             //Write_Command(0xA9);
             serial.command = 0xA9;
+            serial.dataLength = 0;
             Transmit(serial);
 
             //Write_Command(0x5C);
             serial.command = 0x5C;
+            serial.dataLength = 0;
             Transmit(serial);
 
             //Write_Command(0xAF);
             serial.command = 0xAF;
+            serial.dataLength = 0;
             Transmit(serial);
         }
 
@@ -358,7 +381,7 @@ namespace FuzzySpoon
         {
             using (var ctx = new OLEDController())
             {
-//                cmbCommands.DataBindings.Clear();
+                //                cmbCommands.DataBindings.Clear();
                 cmbCommands.DataSource = null;
                 var commandsResult = (from row in ctx.Commands
                                       where row.ControllerId == cmbController.SelectedIndex + 1
@@ -372,27 +395,113 @@ namespace FuzzySpoon
 
         private void Transmit(PACKET packet)
         {
-            //Make a big array to hold the command and its parameters
-            String intString = "";
+            //Send out signals
+            _serialPort.Write(BitConverter.GetBytes(0x55), 0, 1);
+            _serialPort.Write(BitConverter.GetBytes(0xAA), 0, 1);
 
-            intString = packet.command.ToString();
-            intString += packet.data.Count;
+            // Send the C/D bit
+            _serialPort.Write(BitConverter.GetBytes(packet.CD), 0, 1);
 
-            for (int i = 0; i < packet.data.Count; i++)
+            // Send the Command -OR- a zero
+            if (packet.CD == 1)
             {
-                intString += packet.data[i];
+                _serialPort.Write(BitConverter.GetBytes(packet.command), 0, 1);
             }
-            _serialPort.Write(intString);
 
-            packet.command = 0;
-            packet.data.Clear();
+            // Send the dataLength
+            _serialPort.Write(BitConverter.GetBytes(packet.dataLength), 0, 1);
+
+            // Send the data
+            for (int i = 0; i < packet.dataLength; i++)
+            {
+                _serialPort.Write(BitConverter.GetBytes(packet.data[i]), 0, 1);
+            }
+
+        }
+
+        private void cmbFill1_Click(object sender, EventArgs e)
+        {
+            if (_serialPort.IsOpen)
+            {
+                groupBox2.Enabled = false;
+                int dat = 0;
+
+                for (int y = 0; y < 64; y++)
+                {
+                    dat = 0;
+
+                    for (int x = 0; x < 64; x++)
+                    {
+                        byte[] b = BitConverter.GetBytes(dat);
+
+                        _serialPort.Write(b, 0, 1);
+                        _serialPort.Write(b, 0, 1);
+                        if ((x > 0) && (x % 8 == 0))
+                        {
+                            //System.Threading.Thread.Sleep(1);
+                            dat += 0x22;
+                        }
+                    }
+                }
+                groupBox2.Enabled = true;
+            }
+        }
+
+        private void btnFill2_Click(object sender, EventArgs e)
+        {
+            if (_serialPort.IsOpen)
+            {
+                groupBox2.Enabled = false;
+                int dat = 0xEE;
+
+                for (int y = 0; y < 64; y++)
+                {
+                    dat = 0xEE;
+
+                    for (int x = 0; x < 64; x++)
+                    {
+                        byte[] b = BitConverter.GetBytes(dat);
+
+                        _serialPort.Write(b, 0, 1);
+                        _serialPort.Write(b, 0, 1);
+                        if ((x > 0) && (x % 8 == 0))
+                        {
+                            //System.Threading.Thread.Sleep(1);
+                            dat -= 0x22;
+                        }
+                    }
+                }
+                groupBox2.Enabled = true;
+            }
+        }
+
+        private void btnNormal_Click(object sender, EventArgs e)
+        {
+            PACKET packet = new PACKET();
+            //Display_Mode(0xA6);                //Set Display Normal Mode
+            packet.CD = 1;
+            packet.command = 0xA6;
+            packet.dataLength = 0;
+            Transmit(packet);
+        }
+
+        private void btnInvert_Click(object sender, EventArgs e)
+        {
+            PACKET packet = new PACKET();
+            //Display_Mode(0xA7);                //Set Display Inverted Mode
+            packet.CD = 1;
+            packet.command = 0xA7;
+            packet.dataLength = 0;
+            Transmit(packet);
         }
     }
 
     public class PACKET
     {
-        public int command { get; set; }
-        public List<int> data = new List<int>();
+        public byte CD { get; set; }
+        public byte command { get; set; }
+        public byte dataLength { get; set; }
+        public byte[] data = new byte[256];
     }
 
     public class Port
