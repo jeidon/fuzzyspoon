@@ -37,6 +37,9 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.cmdDelete = new System.Windows.Forms.Button();
             this.cmdInsert = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -54,7 +57,7 @@
             this.cmbController.FormattingEnabled = true;
             this.cmbController.Location = new System.Drawing.Point(15, 25);
             this.cmbController.Name = "cmbController";
-            this.cmbController.Size = new System.Drawing.Size(257, 21);
+            this.cmbController.Size = new System.Drawing.Size(323, 21);
             this.cmbController.TabIndex = 0;
             this.cmbController.SelectedIndexChanged += new System.EventHandler(this.cmbController_SelectedIndexChanged);
             // 
@@ -69,23 +72,23 @@
             // 
             // txtCommand
             // 
-            this.txtCommand.Location = new System.Drawing.Point(141, 78);
+            this.txtCommand.Location = new System.Drawing.Point(207, 78);
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.Size = new System.Drawing.Size(131, 20);
             this.txtCommand.TabIndex = 3;
             // 
             // txtParameters
             // 
-            this.txtParameters.Location = new System.Drawing.Point(141, 104);
+            this.txtParameters.Location = new System.Drawing.Point(207, 104);
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.Size = new System.Drawing.Size(131, 20);
             this.txtParameters.TabIndex = 4;
             // 
             // cmdUpdate
             // 
-            this.cmdUpdate.Location = new System.Drawing.Point(141, 159);
+            this.cmdUpdate.Location = new System.Drawing.Point(144, 159);
             this.cmdUpdate.Name = "cmdUpdate";
-            this.cmdUpdate.Size = new System.Drawing.Size(131, 23);
+            this.cmdUpdate.Size = new System.Drawing.Size(194, 23);
             this.cmdUpdate.TabIndex = 6;
             this.cmdUpdate.Text = "Update";
             this.cmdUpdate.UseVisualStyleBackColor = true;
@@ -93,16 +96,16 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(141, 52);
+            this.txtName.Location = new System.Drawing.Point(207, 52);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(131, 20);
             this.txtName.TabIndex = 2;
             // 
             // cmdDelete
             // 
-            this.cmdDelete.Location = new System.Drawing.Point(141, 188);
+            this.cmdDelete.Location = new System.Drawing.Point(144, 188);
             this.cmdDelete.Name = "cmdDelete";
-            this.cmdDelete.Size = new System.Drawing.Size(131, 23);
+            this.cmdDelete.Size = new System.Drawing.Size(194, 23);
             this.cmdDelete.TabIndex = 7;
             this.cmdDelete.Text = "Delete";
             this.cmdDelete.UseVisualStyleBackColor = true;
@@ -110,19 +113,49 @@
             // 
             // cmdInsert
             // 
-            this.cmdInsert.Location = new System.Drawing.Point(141, 130);
+            this.cmdInsert.Location = new System.Drawing.Point(144, 130);
             this.cmdInsert.Name = "cmdInsert";
-            this.cmdInsert.Size = new System.Drawing.Size(131, 23);
+            this.cmdInsert.Size = new System.Drawing.Size(194, 23);
             this.cmdInsert.TabIndex = 5;
             this.cmdInsert.Text = "Insert";
             this.cmdInsert.UseVisualStyleBackColor = true;
             this.cmdInsert.Click += new System.EventHandler(this.cmdInsert_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(141, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Name";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(141, 81);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Command";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(141, 107);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(60, 13);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "Parameters";
+            // 
             // frmCommands
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 223);
+            this.ClientSize = new System.Drawing.Size(348, 223);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cmdInsert);
             this.Controls.Add(this.cmdDelete);
             this.Controls.Add(this.txtName);
@@ -151,5 +184,8 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Button cmdDelete;
         private System.Windows.Forms.Button cmdInsert;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

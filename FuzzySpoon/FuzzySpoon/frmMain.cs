@@ -8,6 +8,7 @@ using System.Linq;
 using System.IO.Ports;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using System.ComponentModel.DataAnnotations;
 
@@ -15,7 +16,7 @@ namespace FuzzySpoon
 {
     public partial class frmMain : Form
     {
-        SerialPort _serialPort = new SerialPort();
+        static SerialPort _serialPort = new SerialPort();
 
         public frmMain()
         {
@@ -126,14 +127,13 @@ namespace FuzzySpoon
                     {
                         _serialPort.Open();
                         groupBox2.Enabled = true;
+                        cmdConnect.Text = "Disconnect";
+                        cmdConnect.ForeColor = System.Drawing.Color.Red;
                     }
                     catch
                     {
                         groupBox2.Enabled = false;
                     }
-
-                    cmdConnect.Text = "Disconnect";
-                    cmdConnect.ForeColor = System.Drawing.Color.Red;
                 }
                 else
                 {
@@ -393,7 +393,7 @@ namespace FuzzySpoon
             }
         }
 
-        private void Transmit(PACKET packet)
+        static public void Transmit(PACKET packet)
         {
             //Send out signals
             _serialPort.Write(BitConverter.GetBytes(0x55), 0, 1);
@@ -421,58 +421,54 @@ namespace FuzzySpoon
 
         private void cmbFill1_Click(object sender, EventArgs e)
         {
-            if (_serialPort.IsOpen)
+            // Layout some variables
+            byte[] bigArray = new byte[8192];
+            int progress = 0;
+            int dat;
+
+            //Spin up a screen
+            for (int y = 0; y < 64; y++)
             {
-                groupBox2.Enabled = false;
-                int dat = 0;
+                dat = 0;
 
-                for (int y = 0; y < 64; y++)
+                for (int x = 0; x < 64; x++)
                 {
-                    dat = 0;
-
-                    for (int x = 0; x < 64; x++)
+                    bigArray[progress++] = (byte)dat;
+                    bigArray[progress++] = (byte)dat;
+                    if ((x > 0) && (x % 8 == 0))
                     {
-                        byte[] b = BitConverter.GetBytes(dat);
-
-                        _serialPort.Write(b, 0, 1);
-                        _serialPort.Write(b, 0, 1);
-                        if ((x > 0) && (x % 8 == 0))
-                        {
-                            //System.Threading.Thread.Sleep(1);
-                            dat += 0x22;
-                        }
+                        dat += 0x22;
                     }
                 }
-                groupBox2.Enabled = true;
             }
+            groupBox2.Enabled = false;
+            sendImageArray(bigArray);
+            groupBox2.Enabled = true;
         }
 
         private void btnFill2_Click(object sender, EventArgs e)
         {
-            if (_serialPort.IsOpen)
+            byte[] bigArray = new byte[8192];
+            int progress = 0;
+            int dat;
+
+            for (int y = 0; y < 64; y++)
             {
-                groupBox2.Enabled = false;
-                int dat = 0xEE;
+                dat = 0xEE;
 
-                for (int y = 0; y < 64; y++)
+                for (int x = 0; x < 64; x++)
                 {
-                    dat = 0xEE;
-
-                    for (int x = 0; x < 64; x++)
+                    bigArray[progress++] = (byte)dat;
+                    bigArray[progress++] = (byte)dat;
+                    if ((x > 0) && (x % 8 == 0))
                     {
-                        byte[] b = BitConverter.GetBytes(dat);
-
-                        _serialPort.Write(b, 0, 1);
-                        _serialPort.Write(b, 0, 1);
-                        if ((x > 0) && (x % 8 == 0))
-                        {
-                            //System.Threading.Thread.Sleep(1);
-                            dat -= 0x22;
-                        }
+                        dat -= 0x22;
                     }
                 }
-                groupBox2.Enabled = true;
             }
+            groupBox2.Enabled = false;
+            sendImageArray(bigArray);
+            groupBox2.Enabled = true;
         }
 
         private void btnNormal_Click(object sender, EventArgs e)
@@ -493,6 +489,137 @@ namespace FuzzySpoon
             packet.command = 0xA7;
             packet.dataLength = 0;
             Transmit(packet);
+        }
+
+        private void btnUpload_Click(object sender, EventArgs e)
+        {
+            if (_serialPort.IsOpen)
+            {
+                groupBox2.Enabled = false;
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+                openFileDialog1.InitialDirectory = "c:\\";
+                openFileDialog1.Filter = "24-Bit Bitmap file (*.bmp)|*.bmp|All files (*.*)|*.*";
+                openFileDialog1.FilterIndex = 2;
+                openFileDialog1.RestoreDirectory = true;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    PACKET packet = new PACKET();
+                    try
+                    {
+                        //  Set Column Address
+                        //  Column_Address(0x1C, 0x5B);
+                        packet.CD = 1;
+                        packet.command = 0x15;
+                        packet.dataLength = 2;
+                        packet.data[0] = 0x1C;
+                        packet.data[1] = 0x5B;
+                        Transmit(packet);
+
+                        //  Set Row Address
+                        //  Row_Address(0x00, 0x3F);
+                        packet.CD = 1;
+                        packet.command = 0x75;
+                        packet.dataLength = 2;
+                        packet.data[0] = 0x00;
+                        packet.data[1] = 0x3F;
+                        Transmit(packet);
+
+                        //  Write_Command(0x5c);
+                        packet.CD = 1;
+                        packet.command = 0x5C;
+                        packet.dataLength = 0;
+                        Transmit(packet);
+
+                        System.Drawing.Bitmap image = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
+                        _bmpImage imgArray = new _bmpImage();
+                        imgArray.sourceImage = image;
+
+                        // Start sending bytes
+                        imgArray.sendImageArray(8);
+
+                        //TODO
+                        //if the arrayProgress < 255
+                        // Wrap it up and send it
+                        //TODO
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: Could not open Bitmap: " + ex.Message);
+                    }
+                }
+                groupBox2.Enabled = true;
+            }
+        }
+
+        private void btnSendImgArray1_Click(object sender, EventArgs e)
+        {
+            Screens screens = new Screens();
+            sendImageArray(screens.logo_screen_16_level);
+        }
+
+        private void btnSendImgArray2_Click(object sender, EventArgs e)
+        {
+            Screens screens = new Screens();
+            sendImageArray(screens.text_description);
+        }
+
+        public void sendImageArray(byte[] sourceImageArray)
+        {
+            if (_serialPort.IsOpen)
+            {
+                PACKET packet = new PACKET();
+
+                //  Set Column Address
+                //  Column_Address(0x1C, 0x5B);
+                packet.CD = 1;
+                packet.command = 0x15;
+                packet.dataLength = 2;
+                packet.data[0] = 0x1C;
+                packet.data[1] = 0x5B;
+                Transmit(packet);
+                Thread.Sleep(1);
+
+                //  Set Row Address
+                //  Row_Address(0x00, 0x3F);
+                packet.CD = 1;
+                packet.command = 0x75;
+                packet.dataLength = 2;
+                packet.data[0] = 0x00;
+                packet.data[1] = 0x3F;
+                Transmit(packet);
+                Thread.Sleep(1);
+
+                //  Write_Command(0x5c);
+                packet.CD = 1;
+                packet.command = 0x5C;
+                packet.dataLength = 0;
+                Transmit(packet);
+                Thread.Sleep(1);
+
+                int arrayProgress = 0;
+                int bytesRemaining = sourceImageArray.Length;
+                for (int i = 0; i < sourceImageArray.Length; i++)
+                {
+                    packet.data[arrayProgress++] = sourceImageArray[i];
+
+                    if (arrayProgress == 251)
+                    {
+                        packet.CD = 0;
+                        packet.dataLength = (byte)arrayProgress;
+                        frmMain.Transmit(packet);
+                        arrayProgress = 0;
+                        bytesRemaining -= 251;
+                    }
+                }
+                if (bytesRemaining > 0)
+                {
+                    packet.CD = 0;
+                    packet.dataLength = (byte)bytesRemaining;
+                    frmMain.Transmit(packet);
+                }
+            }
         }
     }
 
@@ -551,6 +678,4 @@ namespace FuzzySpoon
         public DbSet<Controller> Controllers { get; set; }
         public DbSet<CommandParameters> Parameters {get; set;}
     }
-
-
 }
